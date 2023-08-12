@@ -1,0 +1,46 @@
+{% extends 'global/base.html' %}
+
+{% block content %}
+    
+    <div class="single-contact">
+        <h1 class="single-contact">
+            {{contact.first_name}}  {{contact.last_name}}
+        </h1>
+
+        <p><b>ID: </b>{{contact.id}}</p>
+        <p><b>E-mail: </b>{{contact.email}}</p>
+        <p><b>Phone: </b>{{contact.phone}}</p>
+        <p><b>Created Date: </b>{{contact.created_date}}</p>
+        <p><b>Description: </b>{{contact.description}}</p>
+        <!--coloca o .name para pegar o name da class Category-->
+        <p><b>Category: </b>{{contact.category.name}}</p>
+        {%if contact.picture %}
+        <p>
+            {% comment %} Para pegar a imagem faz assim {% endcomment %}
+            <img src="{{contact.picture.url}}" alt="{{contact.first_name}} {{contact.last_name}}">
+        </p>
+        {%endif%}
+
+        {% if user == contact.owner %}
+            <div class="contact-links">
+                <a href="{% url 'contact:update' contact.id%}" class="btn">UPDATE</a>
+        
+            
+                <form action="{%url 'contact:delete' contact.id%}" method="post">
+                    {% csrf_token %}
+                    
+                    {% if confirmation == 'no' %}
+                        <input type="hidden" name="confirmation" value="yes">
+                        <button class="btn" type="submit">CONFIRMA ?</button>
+                    {% else %}
+                        <button class="btn" type="submit">DELETE</button>
+                    {% endif %}
+                </form>
+                
+            
+            </div>
+        {% endif %}
+  </div>
+{% endblock content %}
+
+
